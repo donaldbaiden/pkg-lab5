@@ -80,21 +80,16 @@ def parse_input_data(text: str) -> Tuple[List[Segment], Optional[ClipWindow]]:
         return [], None
         
     try:
-        # Первая строка мб n, но формат может варьироваться.
-        # Ищем n
         try:
             n_segments = int(lines[0])
             start_idx = 1
         except ValueError:
-             # Возможно первая строка сразу координаты
              n_segments = -1
              start_idx = 0
              
         segments = []
         window = None
         
-        # Читаем все строки как координаты, пока не дойдем до последней (окно)
-        # Если n задано явно, читаем n строк
         
         data_lines = lines[start_idx:]
         
@@ -102,7 +97,6 @@ def parse_input_data(text: str) -> Tuple[List[Segment], Optional[ClipWindow]]:
              segment_lines = data_lines[:n_segments]
              window_line = data_lines[n_segments] if len(data_lines) > n_segments else None
         else:
-            # Эвристика: последняя строка - окно, остальные - отрезки
             if len(data_lines) < 2:
                 return [], None
             segment_lines = data_lines[:-1]
