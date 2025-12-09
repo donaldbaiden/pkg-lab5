@@ -34,29 +34,23 @@ if window and segments:
     with col_viz:
         st.subheader("Визуализация")
         
-        # Matplotlib plot
         fig, ax = plt.subplots(figsize=(8, 6))
         
-        # Рисуем сетку и оси
         ax.grid(True, linestyle=':', alpha=0.6)
         ax.axhline(0, color='black', linewidth=1)
         ax.axvline(0, color='black', linewidth=1)
         
-        # Рисуем окно отсечения
         rect_x = [window.x_min, window.x_max, window.x_max, window.x_min, window.x_min]
         rect_y = [window.y_min, window.y_min, window.y_max, window.y_max, window.y_min]
         ax.plot(rect_x, rect_y, color='blue', linewidth=2, label='Окно отсечения')
         ax.fill(rect_x, rect_y, color='blue', alpha=0.05)
         
-        # Обработка отрезков
         visible_count = 0
         
         for i, seg in enumerate(segments):
-            # Исходный отрезок (серый, пунктир)
             ax.plot([seg.p1.x, seg.p2.x], [seg.p1.y, seg.p2.y], 
                    color='gray', linestyle='--', alpha=0.5, label='Исходные' if i == 0 else "")
             
-            # Отсечение
             clipped = liang_barsky_clip(seg, window)
             
             if clipped:
@@ -67,7 +61,6 @@ if window and segments:
         ax.legend(loc='upper right')
         ax.set_aspect('equal')
         
-        # Автомасштабирование с запасом
         all_x = [p for s in segments for p in (s.p1.x, s.p2.x)] + [window.x_min, window.x_max]
         all_y = [p for s in segments for p in (s.p1.y, s.p2.y)] + [window.y_min, window.y_max]
         margin = 10
@@ -77,7 +70,6 @@ if window and segments:
         
         st.pyplot(fig)
 
-    # Таблица результатов
     st.subheader("Детализация")
     rows = []
     for i, seg in enumerate(segments):
