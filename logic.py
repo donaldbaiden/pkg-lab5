@@ -48,20 +48,16 @@ def liang_barsky_clip(segment: Segment, window: ClipWindow) -> Optional[Segment]
     
     for i in range(4):
         if p[i] == 0:
-            # Отрезок параллелен границе
             if q[i] < 0:
-                # Отрезок полностью за пределами границы
                 return None
         else:
             t = q[i] / p[i]
             if p[i] < 0:
-                # Внешняя -> внутренняя
                 if t > t1:
                     return None
                 if t > t0:
                     t0 = t
             else:
-                # Внутренняя -> внешняя
                 if t < t0:
                     return None
                 if t < t1:
